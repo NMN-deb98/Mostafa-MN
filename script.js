@@ -53,3 +53,25 @@
   if(reduce){return;}
   requestAnimationFrame(frame);
 })();
+
+/* Mobile navigation */
+(function(){
+  var button=document.querySelector('.menu-toggle');
+  var menu=document.getElementById('primary-navigation');
+  if(!button||!menu)return;
+  function closeMenu(){
+    button.setAttribute('aria-expanded','false');
+    button.setAttribute('aria-label','باز کردن منو');
+    menu.classList.remove('is-open');
+  }
+  button.addEventListener('click',function(){
+    var open=button.getAttribute('aria-expanded')!=='true';
+    button.setAttribute('aria-expanded',String(open));
+    button.setAttribute('aria-label',open?'بستن منو':'باز کردن منو');
+    menu.classList.toggle('is-open',open);
+  });
+  menu.querySelectorAll('a').forEach(function(link){link.addEventListener('click',closeMenu);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+  window.addEventListener('resize',function(){if(window.innerWidth>760)closeMenu();});
+  document.addEventListener('click',function(e){if(!menu.contains(e.target)&&!button.contains(e.target))closeMenu();});
+})();
